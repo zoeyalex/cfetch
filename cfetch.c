@@ -7,6 +7,7 @@
 
 int pkg_count()
 {
+  /* Gentoo */
   int files = 0;
   DIR *dir = opendir("/var/db/pkg");
   struct dirent *file, *file2;
@@ -52,12 +53,12 @@ void fetch()
     term = "?";
   if(!shell)
     shell = "?";
-  
+
   struct utsname uname_data;
   uname(&uname_data);
   printf("(\\ /)\t%s\n", uname_data.release);
   printf("( . .)\tpkg %d\n", pkg_count());
-  printf("c(\")(\")\t%s\n", term); 
+  printf("c(\")(\")\t%s\n", term);
   printf("\t%s\n", shell);
 }
 
