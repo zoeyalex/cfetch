@@ -75,8 +75,7 @@ void fetch()
       char *term = getenv("TERM");
       if(!term)
 	term = "term n/a";
-      else
-	printf("\t%s\n", term);
+      printf("\t%s\n", term);
     }
   if(ed)
     {
