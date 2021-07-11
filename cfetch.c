@@ -3,28 +3,31 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/utsname.h>
-
+#include "config.h"
 
 int pkg_count()
 {
-  /* Gentoo */
   int files = 0;
-  DIR *dir = opendir("/var/db/pkg");
-  struct dirent *file, *file2;
-  while ((file = readdir(dir)) != NULL)
-    if (file->d_type == DT_DIR && strcmp(file->d_name, ".") && strcmp(file->d_name, ".."))
-      {
-	char dp[1024];
-	DIR *ddir;
-	strcpy(dp, "/var/db/pkg/");
-	strcat(dp, file->d_name);
-	ddir = opendir(dp);
-	while ((file2 = readdir(ddir)) != NULL)
-	  if (file2->d_type == DT_DIR && strcmp(file2->d_name, ".") && strcmp(file2->d_name, ".."))
-	    files++;
-	closedir(ddir);
-      }
-  closedir(dir);
+  if (!strcmp(os, "Gentoo"))
+    {
+      /* Gentoo */
+      DIR *dir = opendir("/var/db/pkg");
+      struct dirent *file, *file2;
+      while ((file = readdir(dir)) != NULL)
+	if (file->d_type == DT_DIR && strcmp(file->d_name, ".") && strcmp(file->d_name, ".."))
+	  {
+	    char dp[1024];
+	    DIR *ddir;
+	    strcpy(dp, "/var/db/pkg/");
+	    strcat(dp, file->d_name);
+	    ddir = opendir(dp);
+	    while ((file2 = readdir(ddir)) != NULL)
+	      if (file2->d_type == DT_DIR && strcmp(file2->d_name, ".") && strcmp(file2->d_name, ".."))
+		files++;
+	    closedir(ddir);
+	  }
+      closedir(dir);
+    }
   return files;
 }
 
