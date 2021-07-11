@@ -63,7 +63,7 @@ void fetch()
 
   char*shell = getenv("SHELL");
   if(!shell)
-    shell = "shell unknown";
+    shell = "shell n/a";
   struct utsname uname_data;
   uname(&uname_data);
   printf("(\\ /)\t%s\n", uname_data.release);
@@ -74,7 +74,7 @@ void fetch()
     {
       char *term = getenv("TERM");
       if(!term)
-	term = "term unknown";
+	term = "term n/a";
       else
 	printf("\t%s\n", term);
     }
@@ -85,7 +85,7 @@ void fetch()
 	{
 	  editor = getenv("VISUAL");
 	  if(!editor)
-	    editor = "editor unknown";
+	    editor = "editor n/a";
 	}
       printf("\t%s\n", editor);
     }
