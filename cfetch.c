@@ -10,7 +10,6 @@ int pkg_count()
   int files = 0;
   if (!strcmp(os, "Gentoo"))
     {
-      /* Gentoo */
       DIR *dir = opendir("/var/db/pkg");
       struct dirent *file, *file2;
       while ((file = readdir(dir)) != NULL)
@@ -26,6 +25,15 @@ int pkg_count()
 		files++;
 	    closedir(ddir);
 	  }
+      closedir(dir);
+    }
+  else if (!strcmp(os, "OpenBSD"))
+    {
+      DIR *dir = opendir("/var/db/pkg");
+      struct dirent *file;
+      while ((file = readdir(dir)) != NULL)
+	if (file->d_type == DT_REG && strcmp(file->d_name, ".") && strcmp(file->d_name, ".."))
+	  files ++;
       closedir(dir);
     }
   return files;
