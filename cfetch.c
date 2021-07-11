@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/utsname.h>
+#include <stdbool.h>
 #include "config.h"
 
 int pkg_count()
@@ -59,18 +60,35 @@ void palette()
 
 void fetch()
 {
-  char *term = getenv("TERM"), *shell = getenv("SHELL");
-  if(!term)
-    term = "?";
-  if(!shell)
-    shell = "?";
 
+  char*shell = getenv("SHELL");
+  if(!shell)
+    shell = "shell unknown";
   struct utsname uname_data;
   uname(&uname_data);
   printf("(\\ /)\t%s\n", uname_data.release);
   printf("( . .)\tpkg %d\n", pkg_count());
-  printf("c(\")(\")\t%s\n", term);
-  printf("\t%s\n", shell);
+  printf("c(\")(\")\t%s\n", shell);
+
+  if(tm)
+    {
+      char *term = getenv("TERM");
+      if(!term)
+	term = "term unknown";
+      else
+	printf("\t%s\n", term);
+    }
+  if(ed)
+    {
+      char *editor = getenv("EDITOR");
+      if(!editor)
+	{
+	  editor = getenv("VISUAL");
+	  if(!editor)
+	    editor = "editor unknown";
+	}
+      printf("\t%s\n", editor);
+    }
 }
 
 int main(int argc, char *argv[])
