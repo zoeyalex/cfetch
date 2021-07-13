@@ -1,7 +1,11 @@
 #+TITLE: =cfetch=
 [[/img/cfetch.png]]
 *** A simple fetch written in C.
-Build with:
-  #+BEGIN_SRC shell
-  make
-  #+END_SRC
+    Install:
+    #+BEGIN_SRC SHELL
+  root # make clean install
+    #+END_SRC
+    Uninstall:
+    #+BEGIN_SRC shell
+      root # make uninstall
+    #+END_SRC
