@@ -3,13 +3,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/utsname.h>
+#include <sys/statvfs.h>
 #include <stdbool.h>
 #include "config.h"
 
 int pkg_count()
 {
   int files = 0;
-  if (!strcmp(os, "Gentoo"))
+  if (!strcmp(os_name, "Gentoo"))
     {
       DIR *dir = opendir("/var/db/pkg");
       struct dirent *file, *file2;
@@ -28,7 +29,7 @@ int pkg_count()
 	  }
       closedir(dir);
     }
-  else if (!strcmp(os, "OpenBSD"))
+  else if (!strcmp(os_name, "OpenBSD"))
     {
       DIR *dir = opendir("/var/db/pkg");
       struct dirent *file;
@@ -47,15 +48,30 @@ void help()
 
 void palette()
 {
-  int esc_i;
+  int esc_iter;
   char id[16] = "0123456789ABCDEF";
   printf("\x1b[0m");
-  for(esc_i = 0; esc_i < 8; esc_i++)
-    printf("\x1b[30m\x1b[4%dm %c ",esc_i, id[esc_i]);
+  for(esc_iter = 0; esc_iter < 8; esc_iter++)
+    printf("\x1b[30m\x1b[4%dm %c ", esc_iter, id[esc_iter]);
   printf("\x1b[0m\n");
-  for(esc_i = 0; esc_i < 8; esc_i++)
-    printf("\x1b[30m\x1b[10%dm %c ", esc_i, id[esc_i+8]);
+  for(esc_iter = 0; esc_iter < 8; esc_iter++)
+    printf("\x1b[30m\x1b[10%dm %c ", esc_iter, id[esc_iter+8]);
   printf("\x1b[0m\n");
+}
+
+void disk()
+{
+  char *path = "/"; /* path */
+  struct statvfs buf; /* struct pointer */
+  if (!statvfs(path, &buf)) /* return 0 on success -1 otherwise */
+    {
+      unsigned long bavail, blk_size;
+      bavail = buf.f_bavail; /* unprivileged user avaialble */
+      blk_size = buf.f_bsize; /* filesystem block size (4096)*/
+      printf("\t/: %lu\n", bavail * blk_size >> 30);
+    }
+  else 
+    printf("disk usage n/a\n");
 }
 
 void fetch()
@@ -70,24 +86,26 @@ void fetch()
   printf("( . .)\tpkg %d\n", pkg_count());
   printf("c(\")(\")\t%s\n", shell);
 
-  if(tm)
+  if(show_term)
     {
       char *term = getenv("TERM");
       if(!term)
 	term = "term n/a";
       printf("\t%s\n", term);
     }
-  if(ed)
+  if(show_editor)
     {
       char *editor = getenv("EDITOR");
       if(!editor)
 	{
-	  editor = getenv("VISUAL");
+ 	  editor = getenv("VISUAL");
 	  if(!editor)
 	    editor = "editor n/a";
 	}
       printf("\t%s\n", editor);
     }
+  if(show_disk)
+    disk();
 }
 
 int main(int argc, char *argv[])
