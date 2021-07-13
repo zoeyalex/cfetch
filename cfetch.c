@@ -34,7 +34,7 @@ int pkg_count()
       DIR *dir = opendir("/var/db/pkg");
       struct dirent *file;
       while ((file = readdir(dir)) != NULL)
-	if (file->d_type == DT_REG && strcmp(file->d_name, ".") && strcmp(file->d_name, ".."))
+	if (file->d_type == DT_DIR && strcmp(file->d_name, ".") && strcmp(file->d_name, ".."))
 	  files ++;
       closedir(dir);
     }
@@ -70,7 +70,7 @@ void disk()
       blk_size = buf.f_bsize; /* filesystem block size (4096)*/
       printf("\t/: %lu\n", bavail * blk_size >> 30);
     }
-  else 
+  else
     printf("disk usage n/a\n");
 }
 
