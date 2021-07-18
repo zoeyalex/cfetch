@@ -68,7 +68,7 @@ void disk()
       unsigned long bavail, blk_size;
       bavail = buf.f_bavail; /* unprivileged user avaialble */
       blk_size = buf.f_bsize; /* filesystem block size (4096)*/
-      printf("\t/: %lu\n", bavail * blk_size >> 30);
+      printf("\t/: %luG\n", bavail * blk_size >> 30);
     }
   else
     printf("disk usage n/a\n");
@@ -76,7 +76,6 @@ void disk()
 
 void fetch()
 {
-
   char*shell = getenv("SHELL");
   if(!shell)
     shell = "shell n/a";
