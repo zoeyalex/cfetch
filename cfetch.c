@@ -82,7 +82,7 @@ void fetch()
     shell = "shell n/a";
   struct utsname uname_data;
   uname(&uname_data);
-  printf("(\\ /)\t%s\n", uname_data.release);
+  printf("(\\ /)\t%s %s\n", uname_data.sysname, uname_data.release);
   printf("( . .)\tpkg %d\n", pkg_count());
   printf("c(\")(\")\t%s\n", shell);
 
