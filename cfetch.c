@@ -61,7 +61,6 @@ void palette()
 
 void disk()
 {
-  char *path = "/"; /* path */
   struct statvfs buf; /* struct pointer */
   if (!statvfs(path, &buf)) /* return 0 on success -1 otherwise */
     {
