@@ -6,5 +6,4 @@ static const bool show_term = 1;
 static const bool show_editor = 1;
 /* whether you want free disk space on path to be printed */
 static const bool show_disk = 1;
-
 static const char *path = "/";
